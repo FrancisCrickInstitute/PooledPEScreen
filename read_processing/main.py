@@ -1,6 +1,7 @@
 """
 [19/03/2024, Michael Herger] main.py 
-Description: Main script for fastq-to-pegRNA processing, including 
+Description: Main script fastq-to-pegRNA conversion and analysis of pegRNA frequencies and surrogate target editing 
+efficiencies
 """
 
 ###----- IMPORTS ----------------------------------------------------------------------------------------------------###
