@@ -1,5 +1,6 @@
 """
-
+[19/03/2024, Michael Herger] main.py 
+Description: Main script for fastq-to-pegRNA processing, including 
 """
 
 ###----- IMPORTS ----------------------------------------------------------------------------------------------------###
