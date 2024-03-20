@@ -11,6 +11,8 @@ import math
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
+# import auxiliary functions
+import utils.py as utils
 
 ###----- CONSTANTS --------------------------------------------------------------------------------------------------###
 sBaseDir = '/Users/hergerm/Documents/Data/NGS/230728_NovaSeq/'
@@ -128,10 +130,10 @@ def vis_snv_vs_onv_efficiencies(df_pegrna_data, df_correspondence):
     df_top_pegrna_data_snv = df_pegrna_data_snv.sort_values('percentage_editing', ascending=False).drop_duplicates(['mutant index'], keep='first')
     df_top_pegrna_data_onv = df_pegrna_data_onv.sort_values('percentage_editing', ascending=False).drop_duplicates(['mutant index'], keep='first')
     # determine if PAM is edited
-    df_top_pegrna_data_mod['PAM_edit'] = df_top_pegrna_data_mod.apply(lambda row: annotate_pam_edits_for_snvs(row), axis=1)
-    df_top_pegrna_data_mod = annotate_pam_edits_for_onvs(df_top_pegrna_data_mod, df_correspondence)
-    df_pegrna_data_mod['PAM_edit'] = df_pegrna_data_mod.apply(lambda row: annotate_pam_edits_for_snvs(row), axis=1)
-    df_pegrna_data_mod = annotate_pam_edits_for_onvs(df_pegrna_data_mod, df_correspondence)
+    df_top_pegrna_data_mod['PAM_edit'] = df_top_pegrna_data_mod.apply(lambda row: utils.annotate_pam_edits_for_snvs(row), axis=1)
+    df_top_pegrna_data_mod = utils.annotate_pam_edits_for_onvs(df_top_pegrna_data_mod, df_correspondence)
+    df_pegrna_data_mod['PAM_edit'] = df_pegrna_data_mod.apply(lambda row: utils.annotate_pam_edits_for_snvs(row), axis=1)
+    df_pegrna_data_mod = utils.annotate_pam_edits_for_onvs(df_pegrna_data_mod, df_correspondence)
     # add to correspondence table
     ls_onv_pam_edits = []
     ls_snv_pam_edits = []
@@ -493,10 +495,10 @@ def vis_l2fc_means_by_st_threshold(df_pegrna_data, ls_sample_pairs):
     df_variant_l2fc_means_merged['log2FC_' + sample_name + '_mean'] -= log2fc_syn_bg
     # calculate confidence interval
     conf_level = 0.95
-    df_pegrna_l2fc_means_merged['log2FC_' + sample_name + '_ci_lower'] = df_pegrna_l2fc_means_merged.apply(lambda row: calculate_confidence_interval(row, sample_name, conf_level, lower=True), axis=1)
-    df_pegrna_l2fc_means_merged['log2FC_' + sample_name + '_ci_upper'] = df_pegrna_l2fc_means_merged.apply(lambda row: calculate_confidence_interval(row, sample_name, conf_level, lower=False), axis=1)
-    df_variant_l2fc_means_merged['log2FC_' + sample_name + '_ci_lower'] = df_variant_l2fc_means_merged.apply(lambda row: calculate_confidence_interval(row, sample_name, conf_level, lower=True), axis=1)
-    df_variant_l2fc_means_merged['log2FC_' + sample_name + '_ci_upper'] = df_variant_l2fc_means_merged.apply(lambda row: calculate_confidence_interval(row, sample_name, conf_level, lower=False), axis=1)
+    df_pegrna_l2fc_means_merged['log2FC_' + sample_name + '_ci_lower'] = df_pegrna_l2fc_means_merged.apply(lambda row: utils.calculate_confidence_interval(row, sample_name, conf_level, lower=True), axis=1)
+    df_pegrna_l2fc_means_merged['log2FC_' + sample_name + '_ci_upper'] = df_pegrna_l2fc_means_merged.apply(lambda row: utils.calculate_confidence_interval(row, sample_name, conf_level, lower=False), axis=1)
+    df_variant_l2fc_means_merged['log2FC_' + sample_name + '_ci_lower'] = df_variant_l2fc_means_merged.apply(lambda row: utils.calculate_confidence_interval(row, sample_name, conf_level, lower=True), axis=1)
+    df_variant_l2fc_means_merged['log2FC_' + sample_name + '_ci_upper'] = df_variant_l2fc_means_merged.apply(lambda row: utils.calculate_confidence_interval(row, sample_name, conf_level, lower=False), axis=1)
 
     # visualise mean pegRNA scores as line plot
     plt.figure(figsize=(3.2, 2.2))
@@ -660,7 +662,7 @@ def vis_pegrna_data_sample_correlation(df_pegrna_data, dict_sample_info, experim
     df_freq_correlation_spearman = df_pegrna_data.loc[:, ls_samples_freq_colnames].corr(method='spearman', numeric_only=True)
     df_freq_correlation_pearson = df_pegrna_data.loc[:, ls_samples_freq_colnames].corr(method='pearson', numeric_only=True)
     # ST editing - calculate Pearson and Spearman correlation
-    df_pegrna_data_filtered = mask_st_editing_with_low_pegrna_count(df_pegrna_data, ls_samples[2:])
+    df_pegrna_data_filtered = utils.mask_st_editing_with_low_pegrna_count(df_pegrna_data, ls_samples[2:])
     ls_samples_st_colnames = [x + '_percentage_editing' for x in ls_samples]
     df_st_correlation_spearman = df_pegrna_data_filtered.loc[:, ls_samples_st_colnames].corr(method='spearman', numeric_only=True)
     df_st_correlation_pearson = df_pegrna_data_filtered.loc[:, ls_samples_st_colnames].corr(method='pearson', numeric_only=True)
