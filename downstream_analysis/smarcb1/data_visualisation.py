@@ -1,5 +1,8 @@
-
-
+"""
+[19/03/2024, Michael Herger] data_processing_visualisation.py
+Description: Processing and visualisation of  pegRNA-ST and endogenous target data, including scoring and correlation 
+analyses
+"""
 
 ###----- IMPORTS ----------------------------------------------------------------------------------------------------###
 import pandas as pd
@@ -755,53 +758,3 @@ def vis_scores_sample_correlation(df_pegRNA_Data_Log2FCs, df_Variant_Data_Log2FC
     plt.savefig(sVisOutputDir + 'FigureS5C.svg', format='svg')
     plt.close()
     return 0
-
-###----- UTILITY FUNCTIONS ------------------------------------------------------------------------------------------###
-def annotate_pam_edits_for_snvs(pegrna_row):
-    """ function to flag SNVs within PAM """
-    variant_type = pegrna_row['variant_type']
-    pam_seq = pegrna_row['PAM']
-    pam_strand = pegrna_row['PAM strand']
-    dist_to_nick = pegrna_row['distance to nick']
-    pam_edit = np.nan
-    if ((pam_seq in ['AGG', 'CGG', 'GGG', 'TGG']) and (variant_type == 'SNP')):
-        if (pam_strand == '-'):  # correct distance to nick if PAM on negative strand (+1)
-            dist_to_nick += 1
-        pam_edit = True if dist_to_nick in [5, 6] else False
-    return pam_edit
-
-def annotate_pam_edits_for_onvs(df_top_pegrna, df_correspondence):
-    """ function to flag MNVs with edit within PAM """
-    df_pam_edit_snv = df_top_pegrna.loc[df_top_pegrna['variant_type'] == 'SNP', ['mutant index', 'PAM_edit']]
-    df_grouped = df_correspondence.groupby('mutant_index_ONV')
-    dict_onv_pam_edit_merged = {}
-    for name, df_group in df_grouped:
-        ls_snv_indexes = list(df_group['mutant_index_SNV'])
-        ls_pam_edits_SNVs = list(df_pam_edit_snv.loc[df_pam_edit_snv['mutant index'].isin(ls_snv_indexes), 'PAM_edit'])
-        pam_edit_onv = True if ls_pam_edits_SNVs.count(True) > 0 else False
-        dict_onv_pam_edit_merged.update({name: pam_edit_onv})
-    df_top_pegrna['PAM_edit'] = df_top_pegrna['mutant index'].map(dict_onv_pam_edit_merged).fillna(df_top_pegrna['PAM_edit'])
-    return df_top_pegrna
-
-def calculate_confidence_interval(row, sample_name, conf_level, lower):
-    """ function to calculate confindence interval for given input """
-    mean = row['log2FC_' + sample_name + '_mean']
-    sd = row['log2FC_' + sample_name + '_sd']
-    count = row['count']
-    ci_adj = np.nan
-    if (count >= 1):
-        ci_adj = conf_level * sd / math.sqrt(count)
-    if lower == True:
-        ci = mean - ci_adj
-    else:
-        ci = mean + ci_adj
-    return ci
-
-def mask_st_editing_with_low_pegrna_count(df_pegrna_data, ls_sample_ids, count_threshold=10):
-    """ function to mask all ST editing values for pegRNAs with low count """
-    df_pegrna_data_masked = df_pegrna_data
-    for sample_id in ls_sample_ids:
-        count_colname = sample_id + '_pegRNA_count'
-        st_colname = sample_id + '_percentage_editing'
-        df_pegrna_data_masked.loc[df_pegrna_data_masked[count_colname] < count_threshold, st_colname] = np.nan
-    return df_pegrna_data_masked
