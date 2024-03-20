@@ -1,5 +1,6 @@
 """
-[]
+[19/03/2024, Michael Herger] utils.py
+Description: Utility functions accessed from other scripts
 """
 
 ###----- IMPORTS ----------------------------------------------------------------------------------------------------###
