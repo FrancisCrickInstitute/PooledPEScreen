@@ -34,7 +34,7 @@ if __name__ == '__main__':
     sPathToPegRNADataFrame = sInputDir + 'pegRNA_oligos_df_asordered.csv'  # path to csv file of pegRNAs expected in this experiment (allow list)
     sSTFastqDir = sBaseDir + 'fastqs/surrogate_test/'  # directory for processed fastq files (pegRNAs & surrogate targets)
     sSTPreProcessedFastqDir = sSTFastqDir + 'processed/'  
-    sPathToCutadaptBash = sSTFastqDir + 'extract_features_from_fastqs.sh'  # path to bash file for pegRNA-ST fastq pre-processing
+    sPathToCutadaptBash = sSTFastqDir + 'extract_pegrna_elements_from_fastqs.sh'  # path to bash file for pegRNA-ST fastq pre-processing
     sDiMSumOutputDir = sBaseDir + 'input/DiMSum/'  # directory for processed fastq files (endogenous targets)
     sOutputDir = sBaseDir + 'output/' + 'MH_O1/'  # 'MH_%s/' % datetime.date.today().strftime('%y%m%d')  # output directory for analysis
 
