@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 8a. Correlation of pegRNA scores, before and after ST-editing filter. Correlation of variant scores. MLH1 saturation screen.
+    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 9 a-c. Correlation of pegRNA scores, before and after ST-editing filter. Correlation of variant scores. MLH1 saturation screen.
     Date : 240316
     Python version 3.10
 
@@ -285,7 +285,7 @@ def MLH1_x10_pegRNA_correlation_analysis_no_filt():
             "PEmax+MLH1dn-obn pegRNA score",
         ],
         save_path=save_dir
-        / (f"Supp_fig8a_plot_correlation_pegRNA_scores_across_replicates_pre_filt.svg"),
+        / (f"Supp_fig9a_plot_correlation_pegRNA_scores_across_replicates_pre_filt.svg"),
     )
 
 
@@ -347,7 +347,7 @@ def MLH1_x10_pegRNA_correlation_analysis():
         ],
         save_path=save_dir
         / (
-            f"Supp_fig8a_plot_correlation_pegRNA_scores_across_replicates_post_filt.svg"
+            f"Supp_fig9b_plot_correlation_pegRNA_scores_across_replicates_post_filt.svg"
         ),
     )
 
@@ -412,7 +412,7 @@ def MLH1_x10_variant_correlation_analysis():
         ],
         save_path=save_dir
         / (
-            f"Supp_fig8a_plot_correlation_function_scores_across_replicates_post_filt.svg"
+            f"Supp_fig9c_plot_correlation_function_scores_across_replicates_post_filt.svg"
         ),
     )
 
@@ -423,7 +423,7 @@ def MLH1_x10_variant_correlation_analysis():
 
 def main():
     """
-    Main function to plot Supplementary Figure 8 a for PE manuscript. Correlation pairplots of pegRNA scores pre and post St-editing filter, and function scores, color-coded by variant consequence. MLH1 saturation screen.
+    Main function to plot Supplementary Figure 9 a - c for PE manuscript. Correlation pairplots of pegRNA scores pre and post St-editing filter, and function scores, color-coded by variant consequence. MLH1 saturation screen.
     """
     set_style(context="paper", font_scale=1, style="ticks")
     MLH1_x10_pegRNA_correlation_analysis_no_filt()

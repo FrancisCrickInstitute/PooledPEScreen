@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 6 b. ST editing rates across the 4 conditions.
+    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 7 b. ST editing rates across the 4 conditions.
     Date : 240316
     Python version 3.10
 
@@ -122,11 +122,11 @@ def ST_editing_violin_plot(df, x, y, hue, save_path=None):
 
 def main():
     """
-    Main function to plot Supplementary Figure 6 b for PE manuscript. Violinplot: Surrogate target editing rates across 4 conditions. MLH1 saturation screen.
+    Main function to plot Supplementary Figure 7 b for PE manuscript. Violinplot: Surrogate target editing rates across 4 conditions. MLH1 saturation screen.
     """
     save_dir = OUTPUT_DIR
     save_dir.mkdir(exist_ok=True, parents=True)
-    save_path = save_dir / f"Supp_fig6b_plot_ST_editing_rates_violin.svg"
+    save_path = save_dir / f"Supp_fig7b_plot_ST_editing_rates_violin.svg"
     df = pd.read_csv(df_pegRNA_path, delimiter=",")
 
     column_list = ["var_key"]

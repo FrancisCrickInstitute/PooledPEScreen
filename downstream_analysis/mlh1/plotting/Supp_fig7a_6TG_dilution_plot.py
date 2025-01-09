@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 6 a. 6TG dilution series in HAP1:PEmax, HAP1:PEmax+MLH1dn, and HAP1:PE2+MLH1KO.
+    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 7 a. 6TG dilution series in HAP1:PEmax, HAP1:PEmax+MLH1dn, and HAP1:PE2+MLH1KO.
     Date : 240316
     Python version 3.10
 
@@ -95,14 +95,14 @@ def dilution_plot(
 
 def main():
     """
-    Main function to plot Supplementary Figure 6 a for PE manuscript. Lineplot: Viable cell counts by 6TG dosage.
+    Main function to plot Supplementary Figure 7 a for PE manuscript. Lineplot: Viable cell counts by 6TG dosage.
     """
     set_style(context="paper", font_scale=1, style="ticks")
     df = pd.read_csv(dilution_series_path, delimiter=",")
 
     save_dir = OUTPUT_DIR
     save_dir.mkdir(exist_ok=True, parents=True)
-    save_path = save_dir / (f"Supp_fig6a_plot_6TG_dilution_series.svg")
+    save_path = save_dir / (f"Supp_fig7a_plot_6TG_dilution_series.svg")
 
     fig, ax = plt.subplots(figsize=(4, 3))
     dilution_plot(

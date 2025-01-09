@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 10 a and b. Endogenous function scores by genomic positions for each screen condition and correlation of endogenous and function scores for each condition.
+    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 12 a and b. Endogenous function scores by genomic positions for each screen condition and correlation of endogenous and function scores for each condition.
     Date : 240316
     Python version 3.10
 
@@ -359,15 +359,15 @@ def panel_pegRNA_variant_score_correlation_scatter(
 # ----------------------------------------------------------------------------------------------------------------------
 def main():
     """
-    Main function to plot Supplementary Figures 10 a and b for PE manuscript. Endogenous function scores by genomic positions for each screen condition and correlation of endogenous and function scores for each condition.
+    Main function to plot Supplementary Figures 12 a and b for PE manuscript. Endogenous function scores by genomic positions for each screen condition and correlation of endogenous and function scores for each condition.
     """
     save_dir = OUTPUT_DIR
     save_dir.mkdir(exist_ok=True, parents=True)
     save_path_gene_map_log2_pegRNA_filtered = (
-        save_dir / "Supp_fig10a_endogenous_function_score_position_scatter_panel.svg"
+        save_dir / "Supp_fig12a_endogenous_function_score_position_scatter_panel.svg"
     )
     save_path_pegRNA_variant_score_correlation = (
-        save_dir / "Supp_fig10b_endogenous_function_score_correlation_scatter_panel.svg"
+        save_dir / "Supp_fig12b_endogenous_function_score_correlation_scatter_panel.svg"
     )
 
     set_style(context="paper", font_scale=1, style="ticks")

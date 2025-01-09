@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 7 a function score strip plots color-coded by variant consequence. MLH1 saturation screen.
+    Project :  Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 8 b function score strip plots color-coded by variant consequence. MLH1 non-coding screen.
     Date : 240316
     Python version 3.10
 
@@ -18,17 +18,17 @@ from scipy.stats import norm
 
 # VARIABLES
 variables_per_sample = [
-    {"pegRNA_D20": "CK003", "pegRNA_D34": "CK007"},
-    {"pegRNA_D20": "CK005", "pegRNA_D34": "CK009"},
-    {"pegRNA_D20": "CK004", "pegRNA_D34": "CK008"},
-    {"pegRNA_D20": "CK006", "pegRNA_D34": "CK010"},
+    {"pegRNA_D20": "CK015", "pegRNA_D34": "CK019"},
+    {"pegRNA_D20": "CK017", "pegRNA_D34": "CK021"},
+    {"pegRNA_D20": "CK016", "pegRNA_D34": "CK020"},
+    {"pegRNA_D20": "CK018", "pegRNA_D34": "CK022"},
 ]
 
-PEmax_list = ["CK003", "CK005", "CK007", "CK009"]
-PEmaxdn_list = ["CK004", "CK006", "CK008", "CK010"]
-D20_list = ["CK003", "CK005", "CK004", "CK006"]
+PEmax_list = ["CK015", "CK019", "CK017", "CK021"]
+PEmaxdn_list = ["CK016", "CK020", "CK018", "CK022"]
+D20_list = ["CK015", "CK017", "CK016", "CK018"]
 
-pseudo_pre_freq_filter = 1.4e-4
+pseudo_pre_freq_filter = 1e-4
 
 # PATHS
 OUTPUT_DIR = pl.Path(
@@ -36,40 +36,51 @@ OUTPUT_DIR = pl.Path(
 )
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
 
-# Order for plotting
+# order for plotting
 sort_dict_consequence = {
-    "synonymous": 0,
-    "nonsense": 1,
-    "canonical splice": 2,
-    "missense": 3,
-    "splice site": 4,
-    "intronic": 5,
+    "intronic": 0,
+    "canonical splice": 1,
+    "splice site": 2,
+    "5' UTR": 3,
+    "3' UTR": 4,
+    "upstream": 5,
+    "downstream": 6,
 }
 
-# Renaming dictionary
+# renaming dictionary
 consequence_naming_dict = {
-    "SYNONYMOUS": "synonymous",
-    "STOP_GAINED": "nonsense",
     "CANONICAL_SPLICE": "canonical splice",
-    "NON_SYNONYMOUS": "missense",
     "SPLICE_SITE": "splice site",
     "INTRONIC": "intronic",
+    "5PRIME_UTR": "5' UTR",
+    "3PRIME_UTR": "3' UTR",
+    "UPSTREAM": "upstream",
+    "DOWNSTREAM": "downstream",
 }
 
-# Color palette
-consequence_colors = ["#4e77bb", "#e83677", "#f7a83e", "#64bb97", "#243672", "#8acdef"]
+# color palette
+consequence_colors = [
+    "#f7a83e",
+    "#243672",
+    "#8acdef",
+    "#B5A695",
+    "#d091bf",
+    "#784421",
+    "#964594",
+]
 
-# Hue order
+# hue order
 consequence_order = [
-    "synonymous",
-    "nonsense",
     "canonical splice",
-    "missense",
     "splice site",
     "intronic",
+    "5' UTR",
+    "3' UTR",
+    "upstream",
+    "downstream",
 ]
 # --------------------------------------------------------------------------------------------------------------------
-# FUNCTIONS
+# Functions
 
 
 def set_style(font_scale, context="paper", style="ticks"):
@@ -98,17 +109,7 @@ def set_style(font_scale, context="paper", style="ticks"):
     sns.set(style=style, context=context, font_scale=font_scale)
 
 
-def stripplot(
-    df,
-    df_pegRNA,
-    x,
-    y,
-    hue,
-    hue_order,
-    ax,
-    label,
-    legend=False,
-):
+def stripplot_pegRNA(df, df_pegRNA, x, y, hue, hue_order, ax, label, legend=False):
     """
     Plotting function generating stripplots of function scores before and after surrogate target editing filter.
 
@@ -183,20 +184,17 @@ def stripplot(
 
 def main():
     """
-    Main function to plot Supplementary Figure 7 a for PE manuscript. Stripplot: functions scores (variant scores) color-coded by variant consequence. MLH1 saturation screen.
+    Main function to plot Supplementary Figure 8 b for PE manuscript. Stripplot: function scores (variant scores) color-coded by variant consequence. MLH1 non-coding screen.
     """
     save_dir = OUTPUT_DIR
     save_dir.mkdir(exist_ok=True, parents=True)
     set_style(context="paper", font_scale=1, style="ticks")
-    save_path = save_dir / f"Supp_fig7a_plot_function_score_pre_post_filter_strip.svg"
+    save_path = save_dir / "Supp_fig8b_plot_function_score_pre_post_filter_strip.svg"
 
     fig, axes = plt.subplots(4, 2, sharex=True, sharey=True, figsize=(5, 8))
 
-    ST_editing_filter_PEmax = 0
-    ST_editing_filter_PEmaxdn = 0
-
     df_variant_score_path = pl.Path(
-        f"/Users/kajbac/code/240116_final_scripts_for_PE_paper/MLH1x10/pegRNA/variant_score/pseudo_pre_freq_{pseudo_pre_freq_filter}/{ST_editing_filter_PEmax}_PEmax_{ST_editing_filter_PEmaxdn}_PEmaxdn/data_MLH1x10_variant_score_replicates.csv"
+        f"/Users/kajbac/code/240116_final_scripts_for_PE_paper/MLH1_non_coding/variant_score/pseudo_pre_freq_0.0001/0_PEmax_0_PEmaxdn/data_MLH1intronic_variant_score_replicates.csv"
     )
 
     df_variant_score = pd.read_csv(
@@ -207,7 +205,7 @@ def main():
 
     for i, var_dict in enumerate(variables_per_sample):
         # plotting
-        stripplot(
+        stripplot_pegRNA(
             df=df_variant_score_single.dropna(
                 subset=[f"{var_dict['pegRNA_D20']}_{var_dict['pegRNA_D34']}_log2"]
             ).drop_duplicates(subset=["var_key"]),
@@ -223,11 +221,8 @@ def main():
             legend=True,
         )
 
-    ST_editing_filter_PEmax = 5
-    ST_editing_filter_PEmaxdn = 25
-
     df_variant_score_path = pl.Path(
-        f"/Users/kajbac/code/240116_final_scripts_for_PE_paper/MLH1x10/pegRNA/variant_score/pseudo_pre_freq_{pseudo_pre_freq_filter}/{ST_editing_filter_PEmax}_PEmax_{ST_editing_filter_PEmaxdn}_PEmaxdn/data_MLH1x10_variant_score_replicates.csv"
+        f"/Users/kajbac/code/240116_final_scripts_for_PE_paper/MLH1_non_coding/variant_score/pseudo_pre_freq_0.0001/5_PEmax_25_PEmaxdn/data_MLH1intronic_variant_score_replicates.csv"
     )
 
     df_variant_score = pd.read_csv(
@@ -238,7 +233,7 @@ def main():
 
     for i, var_dict in enumerate(variables_per_sample):
         # plotting
-        stripplot(
+        stripplot_pegRNA(
             df=df_variant_score_single.dropna(
                 subset=[f"{var_dict['pegRNA_D20']}_{var_dict['pegRNA_D34']}_log2"]
             ).drop_duplicates(subset=["var_key"]),
@@ -254,12 +249,12 @@ def main():
             legend=True,
         )
 
-    if save_path is None:
-        plt.show()
-    else:
-        plt.savefig(save_path)
-        # plt.savefig(save_path.with_suffix(".pdf"))
-        # plt.savefig(save_path.with_suffix(".png"), dpi=300)
+        if save_path is None:
+            plt.show()
+        else:
+            plt.savefig(save_path)
+            # plt.savefig(save_path.with_suffix(".pdf"))
+            # plt.savefig(save_path.with_suffix(".png"), dpi=300)
 
 
 # ----------------------------------------------------------------------------------------------------------------------

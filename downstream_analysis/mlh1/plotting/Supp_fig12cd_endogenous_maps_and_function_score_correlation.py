@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 10 c and d. Endogenous function scores by genomic positions and correlation of endogenous and function scores for HAP1_PEmax condition.
+    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 12 c and d. Endogenous function scores by genomic positions and correlation of endogenous and function scores for HAP1_PEmax condition.
     Date : 240316
     Python version 3.10
 
@@ -288,21 +288,21 @@ def pegRNA_variant_score_correlation_scatter(
 
 def main():
     """
-    Main function to plot Supplementary Figures 10 c and d for PE manuscript. Endogenous function scores by genomic positions and correlation of endogenous and function scores for HAP1_PEmax condition.
+    Main function to plot Supplementary Figures 12 c and d for PE manuscript. Endogenous function scores by genomic positions and correlation of endogenous and function scores for HAP1_PEmax condition.
     """
     save_dir = OUTPUT_DIR
     save_dir.mkdir(exist_ok=True, parents=True)
     save_path_gene_map_all_variants_up = (
-        save_dir / "Supp_fig10c_endogenous_function_score_position_scatter_up.svg"
+        save_dir / "Supp_fig12c_endogenous_function_score_position_scatter_up.svg"
     )
     save_path_gene_map_all_variants_x11 = (
-        save_dir / "Supp_fig10c_endogenous_function_score_position_scatter_x11.svg"
+        save_dir / "Supp_fig12c_endogenous_function_score_position_scatter_x11.svg"
     )
     save_path_gene_map_all_variants_i15 = (
-        save_dir / "Supp_fig10c_endogenous_function_score_position_scatter_i15.svg"
+        save_dir / "Supp_fig12c_endogenous_function_score_position_scatter_i15.svg"
     )
     save_path_score_correlation = (
-        save_dir / "Supp_fig10d_endogenous_function_score_correlation_scatter.svg"
+        save_dir / "Supp_fig12d_endogenous_function_score_correlation_scatter.svg"
     )
 
     set_style(context="paper", font_scale=1, style="ticks")

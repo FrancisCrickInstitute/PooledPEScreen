@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 6 b. Endogenous variant frequencies across the 4 conditions. MLH1 saturation screen.
+    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 7 b. Endogenous variant frequencies across the 4 conditions. MLH1 saturation screen.
     Date : 240316
     Python version 3.10
 
@@ -165,13 +165,13 @@ def variant_frequencies_across_replicates(df, save_path):
 
 def main():
     """
-    Main function to plot Supplementary Figure 6 b and for PE manuscript. Violinplot: Endogenous variant frequencies across 4 conditions. MLH1 saturation screen.
+    Main function to plot Supplementary Figure 7 b and for PE manuscript. Violinplot: Endogenous variant frequencies across 4 conditions. MLH1 saturation screen.
     """
     save_dir = OUTPUT_DIR
     save_dir.mkdir(exist_ok=True, parents=True)
     save_path_ET = (
         save_dir
-        / f"Supp_fig6b_plot_endogenous_variant_frequencies_log2_filtered_violin.svg"
+        / f"Supp_fig7b_plot_endogenous_variant_frequencies_log2_filtered_violin.svg"
     )
     set_style(context="paper", font_scale=1, style="ticks")
 

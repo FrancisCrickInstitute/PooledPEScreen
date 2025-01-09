@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate a Supplementary Figure 11. AUC values as a function of continuous ST editing thresholds with intronic variants defined as pNeutral and canonical splice variants as pLoF (MLH1 non-coding screen). Filter applied on the pegRNA level, AUC calculated on the variant level.
+    Project :  Prime editing pilot screens. Plotting script to generate a Supplementary Figure 13. AUC values as a function of continuous ST editing thresholds with intronic variants defined as pNeutral and canonical splice variants as pLoF (MLH1 non-coding screen). Filter applied on the pegRNA level, AUC calculated on the variant level.
     Date : 240316
     Python version 3.10
 
@@ -238,11 +238,11 @@ def auc_plot(
 
 def main():
     """
-    Main function to plot Supplementary Figure 11 for PE manuscript. AUC values as a function of continues ST editing thresholds with intronic variants defined as pNeutral and canonical splice variants as pLoF (MLH1 non-coding screen).
+    Main function to plot Supplementary Figure 13 for PE manuscript. AUC values as a function of continues ST editing thresholds with intronic variants defined as pNeutral and canonical splice variants as pLoF (MLH1 non-coding screen).
     """
     save_dir = OUTPUT_DIR
     save_dir.mkdir(exist_ok=True, parents=True)
-    save_path = save_dir / (f"Supp_fig11_plot_auc_variants.svg")
+    save_path = save_dir / (f"Supp_fig13_plot_auc_variants.svg")
 
     set_style(context="paper", font_scale=1, style="ticks")
 

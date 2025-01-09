@@ -1,5 +1,5 @@
 """
-    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 9 b. AUC by mean ST editing filters of increasing stringency. Filter applied on the variant level, AUC calculated on the variant level. MLH1 saturation screen.
+    Project :  Prime editing pilot screens. Plotting script to generate Supplementary Figure 11 b. AUC by mean ST editing filters of increasing stringency. Filter applied on the variant level, AUC calculated on the variant level. MLH1 saturation screen.
     Date : 240316
     Python version 3.10
 
@@ -185,11 +185,11 @@ def auc_plot(
 
 def main():
     """
-    Main function to plot Supplementary Figure 9 b for PE manuscript. AUC values as a function of continues mean ST editing thresholds with synonymous variants defined as pNeutral and non-sense and canonical splice variants as pLoF (MLH1 saturation screen).
+    Main function to plot Supplementary Figure 11 b for PE manuscript. AUC values as a function of continues mean ST editing thresholds with synonymous variants defined as pNeutral and non-sense and canonical splice variants as pLoF (MLH1 saturation screen).
     """
     save_dir = OUTPUT_DIR
     save_dir.mkdir(exist_ok=True, parents=True)
-    save_path = save_dir / (f"Supp_fig9b_plot_auc_mean_ST_editing.svg")
+    save_path = save_dir / (f"Supp_fig11b_plot_auc_mean_ST_editing.svg")
 
     set_style(context="paper", font_scale=1, style="ticks")
     filter_number = replicate_number - 1
