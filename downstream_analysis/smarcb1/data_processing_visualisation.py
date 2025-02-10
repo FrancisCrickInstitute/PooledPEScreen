@@ -1,5 +1,5 @@
 """
-[19/03/2024, Michael Herger] data_processing_visualisation.py
+[10/02/2025, Michael Herger] data_processing_visualisation.py
 Description: Processing and visualisation of  pegRNA-ST and endogenous target data, including scoring and correlation 
 analyses
 """
@@ -11,7 +11,6 @@ import math
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
-# import auxiliary functions
 import utils.py as utils
 
 ###----- CONSTANTS --------------------------------------------------------------------------------------------------###
@@ -579,7 +578,7 @@ def vis_variant_scores_by_consequence(df_data, col_name, plot_title):
 
 
 def vis_t804n_pegrnas():
-    """ code to reproduce Figure S1 """
+    """ code to reproduce Figure S1A """
     # import data set
     df_edit_data = pd.read_csv('/Users/hergerm/Documents/Code/CRISPResso2/PE Pilot Experiment/CRISPRessoData_processed.csv')
     min_aligned_reads = 0
@@ -597,7 +596,7 @@ def vis_t804n_pegrnas():
                   size=2.2, linewidth=0.1, edgecolor='black')
     sns_plot.spines[['right', 'top']].set_visible(False)
     plt.tight_layout()
-    plt.savefig(sVisOutputDir + 'FigureS1.svg', format='svg')
+    plt.savefig(sVisOutputDir + 'FigureS1A.svg', format='svg')
     plt.close()
     return 0
 
@@ -628,7 +627,7 @@ def vis_read_processing(df_read_processing_data):
     return 0
 
 def smarcb1_ko_indel_frequencies():
-    """ code to reproduce Figure S3 """
+    """ code to reproduce Figure S3A """
     # import data set
     df_indel_data = pd.read_csv('/Users/hergerm/Documents/Code/CRISPResso2/221223_SMARCB1 Indel Depletion/IndelFrequencies.csv')
     df_indel_data['Indel.frequency'] = df_indel_data['Indel.frequency'] * 100
@@ -649,12 +648,12 @@ def smarcb1_ko_indel_frequencies():
         ax.legend()
         plt.ylim(0, 100)
         plt.tight_layout()
-        fig.savefig(sVisOutputDir + 'FigureS3.svg', format='svg')
+        fig.savefig(sVisOutputDir + 'FigureS3A.svg', format='svg')
         plt.close()
     return 0
 
 def vis_pegrna_data_sample_correlation(df_pegrna_data, dict_sample_info, experiment):
-    """ code to redproduce Figure S4A and S4B """
+    """ code to reproduce Figure S3B and S3C """
     ls_samples = ['MH024', 'MH025', 'MH001', 'MH002', 'MH003', 'MH004', 'MH005', 'MH006', 'MH007', 'MH008', 'MH009', 'MH010', 'MH011',
                   'MH013', 'MH014', 'MH015', 'MH017']
     # pegRNA frequency - calculate Pearson and Spearman correlation
@@ -676,7 +675,7 @@ def vis_pegrna_data_sample_correlation(df_pegrna_data, dict_sample_info, experim
                               #mask=heatmap_mask)
     plt.title('pegRNA Frequency - Pearson Correlation')  # \n(filtered)
     plt.tight_layout()
-    plt.savefig(sVisOutputDir + 'FigureS4A.svg', format='svg')
+    plt.savefig(sVisOutputDir + 'FigureS3B.svg', format='svg')
     plt.close()
 
     plt.figure(figsize=(3.79, 3.79))
@@ -687,40 +686,31 @@ def vis_pegrna_data_sample_correlation(df_pegrna_data, dict_sample_info, experim
                               #mask=heatmap_mask)
     plt.title('% Correct ST Editing - Pearson Correlation')  # \n(filtered)
     plt.tight_layout()
-    plt.savefig(sVisOutputDir + 'FigureS4B.svg', format='svg')
+    plt.savefig(sVisOutputDir + 'FigureS3C.svg', format='svg')
     plt.close()
     return 0
 
-def vis_pridict_vs_st_correlation(df_pegrna_data):
-    """ code to reproduce Figures S4D and S4E """
-    # box plot
-    plt.figure(figsize=(1.9, 2.1))
-    df_pegrna_data['PRIDICT_bin'] = pd.cut(df_pegrna_data['PRIDICT_editing_Score_deep'],
-                                           [0, 40, 50, 60, 70, 80, 90, 100],
-                                           labels=['0 to 40', '40 to 50', '50 to 60',
-                                                   '60 to 70', '70 to 80', '80 to 90',
-                                                   '90 to 100'])
-    sns_plot = sns.boxplot(data=df_pegrna_data, x='PRIDICT_bin', y='percentage_editing',
-                           showfliers=False, color='grey', **BoxPlotProps)
-    sns_plot.set(xlabel='PRIDICT score', ylabel='% Correct ST Edits')
-    sns_plot.set_xticklabels(sns_plot.get_xticklabels(), rotation=45, horizontalalignment='right')
+def vis_feature_vs_st_correlation(df_pegrna_data):
+    """ code to reproduce Figures S4A-G """
+    # scatter plot with KDE density
+    df_pegrna_data_sub = df_pegrna_data.dropna(subset=['PRIDICT_editing_Score_deep', 'percentage_editing'])
+    x = df_pegrna_data_sub['PRIDICT_editing_Score_deep']
+    y = df_pegrna_data_sub['percentage_editing']
+    values = np.vstack([x, y])
+    kernel = stats.gaussian_kde(values)(values)
+    plt.figure(figsize=(2.5, 2)) 
+    sns_plot = sns.scatterplot(x=x, y=y,
+                             hue=kernel, palette='viridis', 
+                             s=4, linewidth=0)
+    sns.regplot(x=x, y=y, scatter=False, color='black', line_kws={"linewidth": 1})
     sns_plot.spines[['right', 'top']].set_visible(False)
-    plt.tight_layout()
-    plt.savefig(sVisOutputDir + 'FigureS4D.svg', format='svg')
-    plt.close()
-    
-    # scatter plot
-    plt.figure(figsize=(2.2, 1.8))
-    df_pegrna_data['PRIDICT_bin_2'] = pd.cut(df_pegrna_data['PRIDICT_editing_Score_deep'],
-                                             [0, 70, 100], labels=['0 to 70', '70 to 100'])
-    sns_plot = sns.scatterplot(data=df_pegrna_data, x='PRIDICT_editing_Score_deep', y='percentage_editing',
-                               hue='PRIDICT_bin_2', s=4, alpha=0.5, linewidth=0.1, edgecolor='black')
     sns_plot.set(xlabel='PRIDICT score', ylabel='% correct ST edits')
-    sns_plot.spines[['right', 'top']].set_visible(False)
     sns_plot.set_ylim(0, 100)
-    sns_plot.set_xticks([0, 40, 50, 60, 70, 80, 90], ['0', '40', '50', '60', '70', '80', '90'])
+    sns_plot.spines[['right', 'top']].set_visible(False)
+    plt.legend([], [], frameon=False)
     plt.tight_layout()
-    plt.savefig(sVisOutputDir + 'FigureS4E.svg', format='svg')
+    plt.savefig(output_dir + 'FigureS4G.svg', format='svg')
+    plt.show()
     plt.close()
     return 0
 
@@ -743,7 +733,7 @@ def vis_scores_sample_correlation(df_pegRNA_Data_Log2FCs, df_Variant_Data_Log2FC
     sns_plot.set(xlim=(-8, 8), ylim=(-8, 8))
     plt.legend(loc='upper right')
     plt.tight_layout()
-    plt.savefig(sVisOutputDir + 'FigureS5A.svg', format='svg')
+    plt.savefig(sVisOutputDir + 'FigureS5D.svg', format='svg')
     plt.close()
     
     # replicate correlation plot for variant scores
@@ -757,6 +747,6 @@ def vis_scores_sample_correlation(df_pegRNA_Data_Log2FCs, df_Variant_Data_Log2FC
     sns_plot.set(xlim=(-8, 5), ylim=(-8, 5))
     plt.legend(loc='upper right')
     plt.tight_layout()
-    plt.savefig(sVisOutputDir + 'FigureS5C.svg', format='svg')
+    plt.savefig(sVisOutputDir + 'FigureS5F.svg', format='svg')
     plt.close()
     return 0
